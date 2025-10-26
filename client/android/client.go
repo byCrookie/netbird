@@ -7,6 +7,7 @@ import (
 	"os"
 	"slices"
 	"sync"
+	"time"
 
 	log "github.com/sirupsen/logrus"
 
@@ -17,9 +18,9 @@ import (
 	"github.com/netbirdio/netbird/client/internal/peer"
 	"github.com/netbirdio/netbird/client/internal/profilemanager"
 	"github.com/netbirdio/netbird/client/internal/stdnet"
+	"github.com/netbirdio/netbird/client/net"
 	"github.com/netbirdio/netbird/client/system"
 	"github.com/netbirdio/netbird/formatter"
-	"github.com/netbirdio/netbird/client/net"
 )
 
 // ConnectionListener export internal Listener for mobile
@@ -174,9 +175,22 @@ func (c *Client) PeersList() *PeerInfoArray {
 	peerInfos := make([]PeerInfo, len(fullStatus.Peers))
 	for n, p := range fullStatus.Peers {
 		pi := PeerInfo{
-			p.IP,
-			p.FQDN,
-			p.ConnStatus.String(),
+			IP:                         p.IP,
+			FQDN:                       p.FQDN,
+			ConnStatus:                 p.ConnStatus.String(),
+			PubKey:                     p.PubKey,
+			LocalIceCandidateType:      p.LocalIceCandidateType,
+			RemoteIceCandidateType:     p.RemoteIceCandidateType,
+			LocalIceCandidateEndpoint:  p.LocalIceCandidateEndpoint,
+			RemoteIceCandidateEndpoint: p.RemoteIceCandidateEndpoint,
+			BytesRx:                    p.BytesRx,
+			BytesTx:                    p.BytesTx,
+			Latency:                    p.Latency.Milliseconds(),
+			Relayed:                    p.Relayed,
+			Direct:                     !p.Relayed,
+			ConnStatusUpdate:           p.ConnStatusUpdate.Format(time.RFC3339),
+			LastWireguardHandshake:     p.LastWireguardHandshake.Format(time.RFC3339),
+			RosenpassEnabled:           p.RosenpassEnabled,
 		}
 		peerInfos[n] = pi
 	}

@@ -2,9 +2,22 @@ package android
 
 // PeerInfo describe information about the peers. It designed for the UI usage
 type PeerInfo struct {
-	IP         string
-	FQDN       string
-	ConnStatus string // Todo replace to enum
+	IP                         string
+	FQDN                       string
+	ConnStatus                 string // Todo replace to enum
+	PubKey                     string
+	LocalIceCandidateType      string
+	RemoteIceCandidateType     string
+	LocalIceCandidateEndpoint  string
+	RemoteIceCandidateEndpoint string
+	BytesRx                    int64
+	BytesTx                    int64
+	Latency                    int64
+	Relayed                    bool
+	Direct                     bool
+	ConnStatusUpdate           string
+	LastWireguardHandshake     string
+	RosenpassEnabled           bool
 }
 
 // PeerInfoArray is a wrapper of []PeerInfo
